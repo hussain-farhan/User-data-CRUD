@@ -1,14 +1,14 @@
 import React,{useState,useEffect} from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Typography, Box, TextField, Button, Paper } from "@mui/material";
+import { Typography, Box, TextField, Button, Paper, MenuItem, Select, InputLabel, FormControl } from "@mui/material";
 import userReducer from '../features/users/userSlice';
 
 
 const SignupPage = () => {
 
 
-    const [form, setForm] = useState({ name: "", email: "", password: "", phone: "" }); // state to hold the form data
+    const [form, setForm] = useState({ name: "", email: "", password: "", phone: "", role: "" }); // state to hold the form data
      const [successMessage, setSuccessMessage] = useState(""); // state to hold the success message
      const [error, setError] = useState(""); // state to hold the error message
 
@@ -27,7 +27,7 @@ const SignupPage = () => {
            await axios.post(`${backendUrl}/signup`,form); // sending the signup request to the backend
            setSuccessMessage("Sign up successful!"); // alerting the user that the signup was successful
            setError(""); // resetting the error message
-           setForm({name: "", email: "", password: "", phone: ""}); // resetting the form
+           setForm({name: "", email: "", password: "", phone: "",role: ""}); // resetting the form
            navigate("/login"); // navigating to the login page after successful signup
          }
          catch(e) {
@@ -101,7 +101,19 @@ const SignupPage = () => {
                 onChange={handleChange}
                 required    
             />
-
+            <FormControl fullWidth margin="normal" required>
+              <InputLabel id="role-label">Role</InputLabel>
+              <Select
+                labelId="role-label"
+                name="role"
+                value={form.role}
+                onChange={handleChange}
+                label="Role"
+              >
+                <MenuItem value="student">Student</MenuItem>
+                <MenuItem value="teacher">Teacher</MenuItem>
+              </Select>
+            </FormControl>
             {error && (
               <Typography color="error" variant="body2" sx={{ mt: 1 }}>
                 {error}

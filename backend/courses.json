@@ -1,0 +1,43 @@
+[
+  {
+    "id": 1750757816079,
+    "title": "oop",
+    "description": "Object Oriented Programming",
+    "teacherId": 11,
+    "studentIds": [
+      10,
+      3,
+      2,
+      5
+    ]
+  },
+  {
+    "id": 1750768385669,
+    "title": "PF",
+    "description": "fundamentals",
+    "teacherId": 11,
+    "studentIds": [
+      4,
+      5
+    ]
+  },
+  {
+    "id": 1750847904422,
+    "title": "stats",
+    "description": "maths",
+    "teacherId": 10,
+    "studentIds": [
+      4
+    ]
+  },
+  {
+    "id": 1750852500364,
+    "title": "DSA",
+    "description": "Data",
+    "teacherId": 11,
+    "studentIds": [
+      2,
+      3
+    ]
+  }
+]

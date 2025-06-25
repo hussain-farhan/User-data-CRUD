@@ -3,6 +3,10 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { updateUser } from '../features/users/userSlice';
 import { Box, Paper, Typography, TextField, Button } from '@mui/material';
+import { MenuItem, Select, InputLabel, FormControl } from '@mui/material';
+
+
+const roles = ['student', 'teacher'];
 
 export default function UpdateUserPage() {
   const { state: user } = useLocation();
@@ -45,6 +49,21 @@ export default function UpdateUserPage() {
               onChange={(e) => setForm({ ...form, [fld]: e.target.value })}
             />
           ))}
+          <FormControl fullWidth margin="normal">
+  <InputLabel id="role-label">Role</InputLabel>
+  <Select
+    labelId="role-label"
+    value={form.role || ''}
+    label="Role"
+    onChange={(e) => setForm({ ...form, role: e.target.value })}
+  >
+    {roles.map((role) => (
+      <MenuItem key={role} value={role}>
+        {role.charAt(0).toUpperCase() + role.slice(1)}
+      </MenuItem>
+    ))}
+  </Select>
+</FormControl>
           <Button type="submit" variant="contained" fullWidth>
             Save
           </Button>

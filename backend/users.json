@@ -1,0 +1,82 @@
+[
+  {
+    "id": 2,
+    "name": "hamid",
+    "email": "h23@gmail.com",
+    "password": "111",
+    "phone": "09090909090",
+    "role": "student"
+  },
+  {
+    "id": 3,
+    "name": "ali",
+    "email": "1122@123.12",
+    "password": "111",
+    "phone": "03224422777",
+    "role": "student"
+  },
+  {
+    "id": 4,
+    "name": "ammar",
+    "email": "am@gmil.com",
+    "password": "111",
+    "phone": "03224422713",
+    "role": "student"
+  },
+  {
+    "id": 5,
+    "name": "hamza",
+    "email": "hz@gmail.com",
+    "password": "111",
+    "phone": "23081199867",
+    "role": "student"
+  },
+  {
+    "id": 6,
+    "name": "haider",
+    "email": "haider@gmail.com",
+    "password": "111",
+    "phone": "03334001314",
+    "role": "student"
+  },
+  {
+    "id": 7,
+    "name": "hayee",
+    "email": "hayee@gmil.com",
+    "password": "111",
+    "phone": "03224422777",
+    "role": "student"
+  },
+  {
+    "id": 8,
+    "name": "abdullah",
+    "email": "abd@gmail.com",
+    "password": "111",
+    "phone": "03211166666",
+    "role": "student"
+  },
+  {
+    "id": 9,
+    "name": "fasih",
+    "email": "fasih@gmail.com",
+    "password": "111",
+    "phone": "00000",
+    "role": "student"
+  },
+  {
+    "id": 10,
+    "name": "mubashar",
+    "email": "mb@gmail.com",
+    "password": "111",
+    "phone": "0000000000000000",
+    "role": "teacher"
+  },
+  {
+    "id": 11,
+    "name": "mani",
+    "email": "mani@gmail.com",
+    "password": "111",
+    "phone": "0310 4321123",
+    "role": "teacher"
+  }
+]
