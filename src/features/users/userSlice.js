@@ -4,6 +4,18 @@ import { createSelector } from 'reselect';
 
 const backendUrl ='http://localhost:5000';
 
+const loadUserFromStorage = () => {
+  const userStr = localStorage.getItem('user');
+  if (userStr) {
+    try {
+      return JSON.parse(userStr);
+    } catch (e) {
+      console.error('Failed to parse user from localStorage', e);
+    }
+  }
+  return null;
+};
+
 export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
     const res = await axios.get(`${backendUrl}/users`);
     return res.data;
@@ -35,18 +47,20 @@ const userSlice = createSlice({
        list: [],
        status: 'idle',  
          error: null,
-         currentUser:null, 
+         currentUser:loadUserFromStorage(), 
     },
 
     reducers: {
         setCurrentUser: (state, action) => {
             state.currentUser = action.payload;
+            localStorage.setItem('user', JSON.stringify(action.payload));
         },
         logout: (state) => {
             state.currentUser = null;
             state.list = [];
             state.status = 'idle';
             state.error = null;
+            localStorage.removeItem('user');
         },
     },
 

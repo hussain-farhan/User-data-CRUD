@@ -18,22 +18,33 @@ export default function LoginPage() {
 
   useEffect(() => {
      dispatch(fetchUsers());
-  }, [dispatch]);
+     const storedUser = localStorage.getItem('user');
+     if(storedUser){
+      const user = JSON.parse(storedUser);
+      dispatch(setCurrentUser(user));
+
+     } 
+  }, [dispatch, navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const res = await axios.post('http://localhost:5000/login', loginForm);
-      if (!res.data?.user) throw new Error('No user returned');
-      dispatch(setCurrentUser(res.data.user));
-      const role = res.data.user.role;
+      const user = res.data?.user;
+
+      if(!user){
+        throw new Error('Login Failed');
+      }
       
-      if (role === 'student')
-         navigate('/student-dashboard');
-      else if (role === 'teacher')
-         navigate('/teacher-dashboard');
-        else 
-        navigate('/');
+      dispatch(setCurrentUser(user));
+      
+      if(user.role === 'student')
+        navigate('/student-dashboard');
+      else if(user.role === 'teacher')
+        navigate('/teacher-dashboard');
+      else 
+      navigate('/');
+     
     } catch (e) {
       alert('Login failed: ' + (e.response?.data?.message || e.message));
     }
@@ -44,6 +55,7 @@ export default function LoginPage() {
 
   const handleLogout = () => {
     dispatch(logout());
+    localStorage.removeItem('user');
     navigate('/login');
   };
 
