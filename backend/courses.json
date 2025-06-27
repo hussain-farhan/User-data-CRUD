@@ -3,7 +3,7 @@
     "id": 1750757816079,
     "title": "oop",
     "description": "Object Oriented Programming",
-    "teacherId": 11,
+    "teacherId": 2,
     "studentIds": [
       10,
       3,
@@ -15,9 +15,8 @@
     "id": 1750768385669,
     "title": "PF",
     "description": "fundamentals",
-    "teacherId": 11,
+    "teacherId": 2,
     "studentIds": [
-      4,
       5
     ]
   },
@@ -27,18 +26,20 @@
     "description": "maths",
     "teacherId": 10,
     "studentIds": [
-      4
+      4,
+      1
     ]
   },
   {
     "id": 1750852500364,
     "title": "DSA",
     "description": "Data",
-    "teacherId": 11,
+    "teacherId": 2,
     "studentIds": [
       2,
       3,
-      4
+      4,
+      1
     ]
   }
 ]

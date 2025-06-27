@@ -1,16 +1,18 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
 import { createSelector } from 'reselect';
+import Cookies from 'js-cookie';
 
 const backendUrl ='http://localhost:5000';
 
-const loadUserFromStorage = () => {
-  const userStr = localStorage.getItem('user');
-  if (userStr) {
-    try {
+const loadUSerFromCookie = () => {
+  const userStr = Cookies.get('user');
+  
+  if(userStr){
+    try{
       return JSON.parse(userStr);
-    } catch (e) {
-      console.error('Failed to parse user from localStorage', e);
+    }catch(e){
+      console.error('failed to parse user from cookie',e);
     }
   }
   return null;
@@ -25,11 +27,6 @@ export const deleteUser = createAsyncThunk('users/deleteUser', async (id) => {
     await axios.delete(`${backendUrl}/users/${id}`);
     return id; 
 });
-
-// export const updateUser = createAsyncThunk('users/updateUser', async (user) => {
-//     const res = await axios.put(`${backendUrl}/users/${user.id}`, user);
-//     return res.data;
-// });
 
 export const updateUser = createAsyncThunk('users/updateUser', async (user, { rejectWithValue }) => {
   try {
@@ -47,20 +44,20 @@ const userSlice = createSlice({
        list: [],
        status: 'idle',  
          error: null,
-         currentUser:loadUserFromStorage(), 
+         currentUser:loadUSerFromCookie(), 
     },
 
     reducers: {
         setCurrentUser: (state, action) => {
             state.currentUser = action.payload;
-            localStorage.setItem('user', JSON.stringify(action.payload));
+            Cookies.set('user', JSON.stringify(action.payload), {expires: 1, secure: true});
         },
         logout: (state) => {
             state.currentUser = null;
             state.list = [];
             state.status = 'idle';
             state.error = null;
-            localStorage.removeItem('user');
+           Cookies.remove('user');
         },
     },
 

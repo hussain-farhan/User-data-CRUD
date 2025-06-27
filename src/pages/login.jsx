@@ -4,6 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { Typography, Box, TextField,Divider, Button, Paper, TableCell, TableRow, Table, TableHead, TableBody} from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import {fetchUsers, selectUserList, selectCurrentUser, deleteUser, setCurrentUser, logout} from '../features/users/userSlice';
+import Cookies from 'js-cookie';
 
 export default function LoginPage() {
   const dispatch = useDispatch();
@@ -18,25 +19,32 @@ export default function LoginPage() {
 
   useEffect(() => {
      dispatch(fetchUsers());
-     const storedUser = localStorage.getItem('user');
-     if(storedUser){
-      const user = JSON.parse(storedUser);
-      dispatch(setCurrentUser(user));
 
-     } 
-  }, [dispatch, navigate]);
+     const cookieUser = Cookies.get('user');
+     if(cookieUser) {
+      try{
+        const parsedUser = JSON.parse(cookieUser);
+        dispatch(setCurrentUser(parsedUser));
+      }catch(err){
+        console.error('Failed to parse the user cookie', err);
+      }
+     }
+  }, [dispatch]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    try {
+    try {     
       const res = await axios.post('http://localhost:5000/login', loginForm);
       const user = res.data?.user;
 
       if(!user){
         throw new Error('Login Failed');
       }
-      
+
       dispatch(setCurrentUser(user));
+
+      Cookies.set('user', JSON.stringify(user), {expires: 7});
+         
       
       if(user.role === 'student')
         navigate('/student-dashboard');
@@ -55,7 +63,7 @@ export default function LoginPage() {
 
   const handleLogout = () => {
     dispatch(logout());
-    localStorage.removeItem('user');
+    Cookies.remove('user');
     navigate('/login');
   };
 

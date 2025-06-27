@@ -56,8 +56,20 @@
             return res.status(400).json({ message: "User already exists" });
         }
 
+        const generateAvailableId = (users) => {
+            const usedIds = users.map(user => user.id).sort((a, b) => a - b);
+            
+            for (let i = 1; i <= usedIds.length; i++) {
+                if (usedIds[i - 1] !== i) {
+                    return i;
+                    }
+                }
+                return usedIds.length + 1; 
+             };
+
+
         const newUser = {
-            id: users.length + 1,
+            id: generateAvailableId(users),
             name,   
             email,
             password,
@@ -120,6 +132,7 @@
     app.delete("/users/:id", (req,res) => { // delete a user
         const id = parseInt(req.params.id);
         let users = readUser();
+        let courses = readCourses();
 
         const index = users.findIndex(u => u.id == id);
 
@@ -128,9 +141,15 @@
         }
 
         const deletedUser = users.splice(index,1)[0]; // getting the user to be deleted
+        
+        if (deletedUser.role === "teacher") {
+        courses = courses.filter(course => course.teacherId !== id);
+        writeCourses(courses);
+    }
+        
         writeUser(users); 
 
-        res.json({ message: "User deleted successfully", deletedUser });
+        res.json({ message: "User deleted successfully", deletedUser,  ...(deletedUser.role === "teacher" && { note: "All associated courses also deleted." }) });
     });
 
     app.get("/student-data/:id", (req, res) => {

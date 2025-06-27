@@ -112,6 +112,18 @@ const handleDeleteCourse = async (courseId) => {
   }
 };
 
+const handleDeleteUser = async () => {
+    if (!window.confirm("Are you sure you want to delete your account? This cannot be undone.")) return;
+    try {
+      await axios.delete(`http://localhost:5000/users/${currentUser.id}`);
+      dispatch(logout());
+      navigate('/login');
+    } catch (err) {
+      alert("Failed to delete user.");
+    }
+  };
+
+
   const teacherCourses = courses.filter(
     (course) => course.teacherId === currentUser?.id
   );
@@ -171,6 +183,9 @@ const handleDeleteCourse = async (courseId) => {
           <Button variant="outlined" color="error" onClick={handleLogout}>
             Logout
           </Button>
+           <Button variant="contained" color="error" onClick={handleDeleteUser}>
+              Delete Account
+            </Button>
         </Box>
       </CardContent>
     </Card>
@@ -232,7 +247,6 @@ const handleDeleteCourse = async (courseId) => {
                       No students enrolled
                     </Typography>
                   )}
-
                 </>
               )}
             </Card>

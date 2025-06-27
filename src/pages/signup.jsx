@@ -18,12 +18,13 @@ const SignupPage = () => {
 
        const handleSignup = async (e) => {
       e.preventDefault(); // preventing the default form submission behavior
-         try{
+         
             if(!form.name || !form.email || !form.password || !form.phone) {
            setError("All fields are required!"); // checking if all fields are filled
               return; // returning if any field is empty
             }
-
+            
+            try{
            await axios.post(`${backendUrl}/signup`,form); // sending the signup request to the backend
            setSuccessMessage("Sign up successful!"); // alerting the user that the signup was successful
            setError(""); // resetting the error message
@@ -59,7 +60,7 @@ const SignupPage = () => {
       >
         <Paper elevation={2} sx={{ padding: 2, width: 400, borderRadius: 4 }}>
           <Typography variant="h5" align="center" gutterBottom>
-            Customer Signup
+            User Signup
           </Typography>
           <form onSubmit={handleSignup}>
             <TextField

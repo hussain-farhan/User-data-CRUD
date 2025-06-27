@@ -13,6 +13,7 @@ const StudentDashboard = () => {
   const [editMode, setEditMode] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", phone: "", role: "" });
   const [loading, setLoading] = useState(true);
+  const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -75,6 +76,34 @@ const StudentDashboard = () => {
       });
   };
 
+  const handleDeleteUser = () => {
+  if (window.confirm("Are you sure you want to delete your account?")) {
+    setDeleting(true);
+    axios
+      .delete(`http://localhost:5000/users/${currentUser.id}`)
+      .then(() => {
+        dispatch(logout()); 
+       setTimeout(() => {
+            navigate('/login');
+          }, 100);
+      })
+      .catch((err) => {
+        setDeleting(false);
+        console.error(err);
+        alert('Failed to delete account');
+      });
+  }
+};
+
+if(deleting) {
+   return (
+      <Box display="flex" justifyContent="center" mt={5}>
+        <Typography>Deleting your account...</Typography>
+      </Box>
+    );
+  }
+
+
   if (loading)
     return (
       <Box display="flex" justifyContent="center" mt={5}>
@@ -117,59 +146,77 @@ const StudentDashboard = () => {
                   <Typography variant="body2"><strong>Phone:</strong> {form.phone}</Typography>
                   <Typography variant="body2"><strong>Role:</strong> {form.role}</Typography>
 
+                 <Box display="flex" justifyContent="space-between" mt={2}>
                   <Button
-                    variant="outlined"
-                    sx={{ mt: 2 }}
-                    onClick={handleEditToggle}
+                  variant="outlined"
+                  color="primary"
+                  onClick={handleEditToggle}
                   >
                     Edit Profile
-                  </Button> 
+                    </Button>
+                    <Button
+                    variant="outlined"
+                    color="error"
+                    onClick={handleDeleteUser}
+                 >
+                  Delete Account
+                  </Button>
+                  </Box> 
                 </Box>
               ) : (
-                <Box component="form" onSubmit={handleUpdateProfile}>
-                  <TextField
-                    label="Name"
-                    fullWidth
-                    name="name"
-                    value={form.name}
-                    onChange={handleFormChange}
-                    sx={{ mt: 1 }}
-                  />
-                  <TextField
-                    label="Email"
-                    fullWidth
-                    name="email"
-                    value={form.email}
-                    onChange={handleFormChange}
-                    sx={{ mt: 1 }}
-                  />
-                  <TextField
-                    label="Phone"
-                    fullWidth
-                    name="phone"
-                    value={form.phone}
-                    onChange={handleFormChange}
-                    sx={{ mt: 1 }}
-                  />
-                  <TextField
-                    label="Role"
-                    fullWidth
-                    name="role"
-                    value={form.role}
-                    onChange={handleFormChange}
-                    sx={{ mt: 1 }}
-                  />
-                  <Box display="flex" justifyContent="space-between" mt={2}>
-                    <Button type="submit" variant="contained" color="primary">
-                      Save
-                    </Button>
-                    <Button variant="outlined" onClick={handleEditToggle}>
-                      Cancel
-                    </Button>
-                  </Box>
-                </Box>
-              )}
-
+               <Box component="form" onSubmit={handleUpdateProfile}>
+                <TextField
+                label="Name"
+                fullWidth
+                name="name"
+                value={form.name}
+                onChange={handleFormChange}
+                sx={{ mt: 1 }}
+             />
+             <TextField
+             label="Email"
+             fullWidth
+             name="email"
+             value={form.email}
+             onChange={handleFormChange}
+             sx={{ mt: 1 }}
+             />
+             <TextField
+            label="Phone"
+            fullWidth
+            name="phone"
+            value={form.phone}
+            onChange={handleFormChange}
+            sx={{ mt: 1 }}
+            />
+            
+            <TextField
+            label="Role"
+            fullWidth
+            name="role"
+            value={form.role}
+            onChange={handleFormChange}
+            sx={{ mt: 1 }}
+    />
+    <Box display="flex" justifyContent="space-between" mt={2}>
+      <Button type="submit" variant="contained" color="primary">
+        Save
+      </Button>
+      <Button variant="outlined" onClick={handleEditToggle}>
+        Cancel
+      </Button>
+    </Box>
+    <Button
+      variant="outlined"
+      color="error"
+      fullWidth
+      sx={{ mt: 2 }}
+      onClick={handleDeleteUser}
+    >
+      Delete Account
+    </Button>
+  </Box>
+)}
               <Box display="flex" justifyContent="center" mt={2}>
                 <Button variant="outlined" color="error" onClick={handleLogout}>
                   Logout
